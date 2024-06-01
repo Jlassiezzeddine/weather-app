@@ -6,8 +6,9 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDebounceValue, useOnClickOutside } from "usehooks-ts";
 
 function Search() {
-  const [value, setValue] = useDebounceValue("", 500);
-  const { setQueryParams } = useQueryParams<{
+  const [value, setValue] = useState("");
+  const [debounced, setDebounced] = useDebounceValue("", 500);
+  const { queryParams, setQueryParams } = useQueryParams<{
     latitude: number;
     longitude: number;
   }>();
@@ -29,30 +30,41 @@ function Search() {
         : geo.features.slice(0, 5),
     [value]
   );
-  function handleSelect([latitude, longitude]: [number, number]) {
+  function handleSelect({
+    longitude,
+    latitude,
+    city,
+  }: {
+    longitude: number;
+    latitude: number;
+    city: string;
+  }) {
     setQueryParams({ latitude, longitude });
-    setValue("");
+    setValue(city);
+    setDebounced("");
   }
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setValue(e.currentTarget.value);
+    setDebounced(e.currentTarget.value);
   }
 
   const ref = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = () => {
-    setValue("");
+    setDebounced("");
   };
   const { userLocation, getUserLocation } = useGetCurrentLocation();
   useOnClickOutside(ref, handleClickOutside);
 
   useEffect(() => {
-    getUserLocation();
+    if (!queryParams.latitude || !queryParams.longitude) getUserLocation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (userLocation) {
       const { latitude, longitude } = userLocation;
+      setValue("Current location");
       setQueryParams({
         latitude,
         longitude,
@@ -75,7 +87,7 @@ function Search() {
           <Icon icon="locate-fixed" />
         </div>
         <input
-          defaultValue={value}
+          value={value}
           onChange={handleSearch}
           type="text"
           placeholder="Search ..."
@@ -84,7 +96,7 @@ function Search() {
           className="min-h-11  placeholder:text-zinc-700 rounded-full text-inherit px-16  bg-transparent border border-zinc-50 focus-within:outline-zinc-50"
         />
 
-        {value && suggestions?.length > 0 ? (
+        {debounced && suggestions.length > 0 ? (
           <div
             className={
               "absolute w-full top-[120%] shadow-lg left-0 overflow-clip backdrop-blur-sm rounded-3xl z-50 border border-zinc-50"
@@ -95,7 +107,11 @@ function Search() {
                 key={e.properties.geonameid}
                 className="select-none cursor-pointer p-3 hover:bg-zinc-50 hover:bg-opacity-25"
                 onClick={() =>
-                  handleSelect([e.properties.latitude, e.properties.longitude])
+                  handleSelect({
+                    longitude: e.properties.longitude,
+                    latitude: e.properties.latitude,
+                    city: `${e.properties.name}, ${e.properties.adm0name}`,
+                  })
                 }
               >
                 {`${e.properties.name}, ${e.properties.adm0name}`}

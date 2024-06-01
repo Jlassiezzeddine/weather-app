@@ -6,7 +6,7 @@ function Predictions({
   forecast,
 }: {
   value?: string;
-  forecast?: string;
+  forecast?: number;
 }) {
   const mainValue = value?.split("\n");
   return (
@@ -23,7 +23,12 @@ function Predictions({
               {mainValue?.[1]}
             </div>
           </div>
-          <div className="text-center text-lg">{forecast}</div>
+          <div className="text-center text-lg">
+            {forecast
+              ? (Math.round(forecast * 100) / 100).toFixed(2) +
+                " mm in the next 6 days"
+              : "unavailable"}
+          </div>
         </div>
       )}
     </HighlightBox>

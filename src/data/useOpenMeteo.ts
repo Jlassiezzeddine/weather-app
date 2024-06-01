@@ -26,7 +26,7 @@ export interface IData {
 
   predictions: {
     "24-h": string;
-    forecast: string;
+    forecast?: number;
   };
   humidity: {
     value: string;
@@ -185,11 +185,11 @@ function useOpenMeteo(): IData | undefined {
 
     predictions: {
       "24-h": `${weatherData.data.daily.precipitation_sum?.[0]} mm \n in the last 24 h`,
-      forecast: `${weatherData.data.daily.precipitation_sum.reduce(
+      forecast: weatherData.data.daily.precipitation_sum.reduce(
         (accumulator: number, currentValue: number) =>
           accumulator + currentValue,
         0
-      )} mm in the next 6 days`,
+      ),
     },
     humidity: {
       value: weatherData.data.current.relative_humidity_2m,
