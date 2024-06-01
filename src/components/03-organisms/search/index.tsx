@@ -31,6 +31,7 @@ function Search() {
   );
   function handleSelect([latitude, longitude]: [number, number]) {
     setQueryParams({ latitude, longitude });
+    setValue("");
   }
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setValue(e.currentTarget.value);
