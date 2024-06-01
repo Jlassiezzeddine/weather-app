@@ -69,7 +69,6 @@ function useOpenMeteo(): IData | undefined {
     queryKey: ["GET_WEATHER", query],
     queryFn: () => axios.get(`${url}${query ? "?" + query : ""}`),
   });
-  console.log("weatherData", weatherData?.data);
   const [currentDew, setCurrentDew] = useState({ value: 0, unit: "" });
   const [currentVisibility, setCurrentVisibility] = useState({
     value: 0,

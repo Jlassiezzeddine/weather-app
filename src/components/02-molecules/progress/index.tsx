@@ -5,7 +5,6 @@ function Progress({ value }: { value: number }) {
   const MAX = 15;
 
   const percentage = value / MAX;
-  console.log("percentage", percentage);
   return (
     <div className="flex justify-center">
       <div className="relative max-w-56">

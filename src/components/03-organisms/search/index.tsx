@@ -39,12 +39,15 @@ function Search() {
   const ref = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = () => {
-    // Your custom logic here
-    console.log("outside");
     setValue("");
   };
   const { userLocation, getUserLocation } = useGetCurrentLocation();
   useOnClickOutside(ref, handleClickOutside);
+
+  useEffect(() => {
+    getUserLocation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (userLocation) {
@@ -64,7 +67,6 @@ function Search() {
         </div>
         <div
           onClick={() => {
-            console.log("click");
             getUserLocation();
           }}
           className=" cursor-pointer bg-zinc-50 bg-opacity-25 hover:bg-opacity-10 absolute top-1/2 right-0 -translate-y-1/2 h-full aspect-square rounded-r-full hover:rounded-full transition-all duration-300 flex justify-center items-center"

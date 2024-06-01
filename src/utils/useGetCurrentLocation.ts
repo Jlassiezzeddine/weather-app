@@ -13,7 +13,6 @@ function useGetCurrentLocation() {
       // get the current users location
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log("position", position);
           // save the geolocation coordinates in two variables
           const { latitude, longitude } = position.coords;
           // update the value of userlocation variable
