@@ -1,6 +1,6 @@
 "use client";
 import Background from "@/components/02-molecules/background";
-import Search from "@/components/02-molecules/search";
+import Search from "@/components/03-organisms/search";
 import Sun from "@/components/03-organisms/Sun";
 import Humidity from "@/components/03-organisms/humidity";
 import Overview from "@/components/03-organisms/overview";

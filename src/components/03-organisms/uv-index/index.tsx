@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import HighlightBox from "@/components/02-molecules/highlightBox";
 import Loader from "@/components/01-atoms/Loader";
+import Progress from "@/components/02-molecules/progress";
 function UvIndex({
   value,
   description,
@@ -17,7 +18,10 @@ function UvIndex({
       ) : (
         <div className="flex flex-col items-center gap-6 justify-center h-full">
           <div className="relative">
-            <div className="text-6xl ">{value}</div>
+            <Progress value={value} />
+            <div className="text-5xl absolute bottom-0 left-1/2 -translate-x-1/2 ">
+              {value}
+            </div>
           </div>
           <div className="text-lg text-center">
             {description && generateLabelFromSlug(description)}

@@ -54,6 +54,7 @@ function Search() {
         longitude,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userLocation]);
   return (
     <div className=" flex items-center justify-center text-inherit w-full p-2 z-50">
